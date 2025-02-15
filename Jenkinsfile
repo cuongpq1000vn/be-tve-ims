@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         GITHUB_REPO = 'git@github.com:cuongpq1000vn/be-tve-ims.git'
-        SSH_CREDENTIALS = 'ec2-ssh-key'
+        SSH_CREDENTIALS = 'github-ssh-key'  // Đổi từ 'ec2-ssh-key' thành GitHub SSH Key
         ECR_REPO = '277707103845.dkr.ecr.ap-southeast-1.amazonaws.com/tri-viet-namespace/tri-viet'
         EC2_USER = 'ubuntu'
         EC2_HOST = 'ec2-user@18.141.181.255'
@@ -61,7 +61,7 @@ pipeline {
                 sshagent([SSH_CREDENTIALS]) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ${EC2_HOST} << EOF
-                    docker pull ${ECR_REPO}:${tag}
+                    docker pull ${ECR_REPO}:latest
                     cd ~/springboot-deploy
                     docker-compose down
                     docker-compose up -d
