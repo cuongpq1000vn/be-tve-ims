@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'api-agent' }
+    agent any
 
     environment {
         GITHUB_REPO = 'git@github.com:cuongpq1000vn/be-tve-ims.git'
@@ -29,9 +29,9 @@ pipeline {
             steps {
                 script {
                     sh """
-                    cp /home/quangnguyen16200/coffeeshop/cred/client_secret.json ./client_secret.json
-                    cp /home/quangnguyen16200/coffeeshop/cred/service_user.json ./service_user.json
-                    docker build --build-arg SECRET_PATH=./client_secret.json --build-arg SERVICE_PATH=./service_user.json -t longchass-be:latest .
+                    cp /home/ec2-user/springboot-deploy/google-auth/client_secret.json ./client_secret.json
+                    cp /home/ec2-user/springboot-deploy/google-auth/service_user.json ./service_user.json
+                    docker build --build-arg SECRET_PATH=./client_secret.json --build-arg SERVICE_PATH=./service_user.json -t tve-ims:latest .
                     """
                 }
             }
@@ -49,7 +49,7 @@ pipeline {
                     }
 
                     sh """
-                    docker tag longchass-be:latest ${ECR_REPO}:${tag}
+                    docker tag tve-ims:latest ${ECR_REPO}:${tag}
                     docker push ${ECR_REPO}:${tag}
                     """
                 }
